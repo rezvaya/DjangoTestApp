@@ -1,0 +1,41 @@
+{% load static %}
+<html>
+   <head>
+      <title>Django Test App</title>
+      <link rel="stylesheet" href={% static 'css/style.css' %}/>
+   </head>
+   <body>
+   
+      {% if errors %}
+         <ul>
+            {% for error in errors %}
+               <li style="color: red;">{{ error }}</li>
+            {% endfor %}
+         </ul>
+      {% else %} 
+         {% if answ == "False"%}   
+            <h2> {{ form }} не является субъектом малого или среднего предпринимательства </h2>
+         {% else %}
+            <h2> {{ form }} является субъектом малого или среднего предпринимательства </h2> 
+         {% endif %}
+      {% endif %}
+
+      <form action="" id="inn_ogrn" method="post" type="reset">
+         <label></label> 
+         <input placeholder="Введите ИНН или ОГРН" name="inn" type="text" value="{{ form }}">       
+         <input type="submit" value="Проверить">
+         {% csrf_token %}
+      </form>
+
+      {% if rows.count > 0 %}
+         <h2> Предыдущие проверки </h2>
+         <table>
+            <tr><th>Проверяемые данные</th><th>Дата</th><th>Результат проверки</th></tr>
+            {% for i in rows %}
+               <tr><td>{{ i.value }}</td><td>{{ i.time }}</td><td>{{ i.value_type }}</td></tr>
+            {% endfor %}
+         </table>
+      {% endif %} 
+
+   </body>
+</html>
